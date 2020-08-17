@@ -5,9 +5,9 @@ triggers {
     }
 
 steps {
-shell('''if ! kubectl get pvc | grep php-pvc
+shell('''if ! kubectl get pvc | grep pvc
          then
-          kubectl create -f /root/.jenkins/workspace/seed_job/php_pvc.yml
+          kubectl create -f /root/.jenkins/workspace/seed_job/pvc.yml
          fi
          if ls /root/.jenkins/workspace/seed_job/ | grep .php
          then
@@ -19,7 +19,7 @@ shell('''if ! kubectl get pvc | grep php-pvc
              kubectl cp /root/.jenkins/workspace/seed_job/*.php $i:/var/www/html/
             done
           else
-           kubectl  create -f /root/.jenkins/workspace/seed_job/php.yml
+           kubectl  create -f /root/.jenkins/workspace/seed_job/deploy.yml
            sleep 25
            PODS=$(kubectl get pods -l app=php -o jsonpath="{.items[*].metadata.name}")
            for i in $PODS
@@ -28,9 +28,9 @@ shell('''if ! kubectl get pvc | grep php-pvc
             done
           fi 
          fi  
-         if ! kubectl get svc | grep php-deploy-svc
+         if ! kubectl get svc | grep svc
          then
-          kubectl create -f /root/.jenkins/workspace/seed_job/php_svc.yml
+          kubectl create -f /root/.jenkins/workspace/seed_job/svc.yml
          fi''') 
 }
 } 
